@@ -23,7 +23,6 @@
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { background: var(--bg); color: var(--text); font-family: var(--sans); font-size: 14px; min-height: 100vh; }
 
-  /* TOP BAR */
   .topbar { background: var(--surface); border-bottom: 1px solid var(--border); padding: 0 1.5rem; height: 52px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
   .topbar-left { display: flex; align-items: center; gap: 10px; }
   .logo { font-size: 15px; font-weight: 600; letter-spacing: -0.3px; color: var(--text); }
@@ -34,19 +33,21 @@
   .refresh-btn:hover { border-color: var(--accent); color: var(--accent); }
   .last-update { font-size: 11px; color: var(--muted); font-family: var(--mono); }
 
-  /* SETUP */
   .setup-wrap { max-width: 700px; margin: 3rem auto; padding: 0 1.5rem; }
   .setup-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 2rem; }
   .setup-card h2 { font-size: 16px; font-weight: 600; margin-bottom: 6px; }
   .setup-card p { color: var(--muted); font-size: 13px; line-height: 1.6; margin-bottom: 1.5rem; }
   .setup-card code { font-family: var(--mono); font-size: 12px; background: var(--surface2); padding: 1px 6px; border-radius: 4px; color: var(--accent); }
-  .field-row { display: flex; gap: 8px; flex-wrap: wrap; }
+  .field-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 8px; }
   .field-row input { flex: 1; min-width: 160px; background: var(--surface2); border: 1px solid var(--border); color: var(--text); padding: 8px 12px; border-radius: 8px; font-size: 13px; outline: none; }
   .field-row input:focus { border-color: var(--accent); }
   .btn-primary { background: var(--accent); color: #fff; border: none; padding: 8px 18px; border-radius: 8px; cursor: pointer; font-size: 13px; font-weight: 500; white-space: nowrap; transition: opacity .15s; }
   .btn-primary:hover { opacity: .85; }
 
-  /* FILTERS */
+  .stats-bar { display: flex; gap: 1.5rem; padding: .6rem 1.5rem; border-bottom: 1px solid var(--border); flex-wrap: wrap; }
+  .stat { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--muted); }
+  .stat strong { color: var(--text); font-family: var(--mono); }
+
   .filters-bar { padding: .85rem 1.5rem; display: flex; align-items: center; gap: 8px; border-bottom: 1px solid var(--border); flex-wrap: wrap; }
   .filt { background: transparent; border: 1px solid var(--border); color: var(--muted); padding: 4px 12px; border-radius: 99px; cursor: pointer; font-size: 12px; transition: all .15s; display: flex; align-items: center; gap: 5px; }
   .filt:hover, .filt.active { color: var(--text); border-color: var(--accent); background: rgba(79,142,247,.1); }
@@ -55,23 +56,21 @@
   .search-wrap input { background: var(--surface); border: 1px solid var(--border); color: var(--text); padding: 5px 12px; border-radius: 8px; font-size: 12px; outline: none; width: 180px; }
   .search-wrap input:focus { border-color: var(--accent); }
 
-  /* GRID */
   .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 12px; padding: 1.25rem 1.5rem; }
 
-  /* CARD */
   .card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 1rem 1.1rem; display: flex; flex-direction: column; gap: 10px; transition: border-color .15s; }
   .card:hover { border-color: #3e4460; }
-  .card.estado-ok     { border-left: 3px solid var(--ok); }
+  .card.estado-ok, .card.estado-correcto { border-left: 3px solid var(--ok); }
   .card.estado-trabajando { border-left: 3px solid var(--accent); }
-  .card.estado-correcto   { border-left: 3px solid var(--ok); }
-  .card.estado-esperar    { border-left: 3px solid var(--warn); }
-  .card.estado-pendiente  { border-left: 3px solid var(--pending); }
+  .card.estado-esperar { border-left: 3px solid var(--warn); }
+  .card.estado-pendiente { border-left: 3px solid var(--pending); }
   .card.estado-descartada { border-left: 3px solid var(--danger); opacity: .6; }
 
   .card-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; }
   .card-name { font-size: 13px; font-weight: 600; line-height: 1.4; }
   .card-desc { font-size: 12px; color: var(--muted); margin-top: 2px; }
-  .badge-estado { font-size: 10px; font-weight: 600; padding: 2px 8px; border-radius: 99px; white-space: nowrap; flex-shrink: 0; letter-spacing: .3px; text-transform: uppercase; }
+
+  .badge-estado { font-size: 10px; font-weight: 600; padding: 2px 8px; border-radius: 99px; white-space: nowrap; flex-shrink: 0; letter-spacing: .3px; text-transform: uppercase; cursor: pointer; }
   .b-ok, .b-correcto { background: rgba(61,214,140,.15); color: var(--ok); }
   .b-trabajando { background: rgba(79,142,247,.15); color: var(--accent); }
   .b-esperar { background: rgba(245,166,35,.15); color: var(--warn); }
@@ -82,13 +81,10 @@
   .tag { font-size: 11px; font-family: var(--mono); background: var(--surface2); border: 1px solid var(--border); padding: 2px 7px; border-radius: 4px; color: var(--muted); }
   .tag-icono { color: var(--accent); border-color: rgba(79,142,247,.3); }
   .meta-email { font-size: 11px; color: var(--muted); display: flex; align-items: center; gap: 4px; }
-  .meta-email svg { width: 11px; height: 11px; flex-shrink: 0; }
   .link-open { font-size: 11px; color: var(--accent); text-decoration: none; display: inline-flex; align-items: center; gap: 3px; margin-left: auto; }
   .link-open:hover { text-decoration: underline; }
+  .card-deploy { font-size: 11px; color: var(--muted); font-family: var(--mono); }
 
-  .card-deploy { font-size: 11px; color: var(--muted); font-family: var(--mono); display: flex; align-items: center; gap: 5px; }
-
-  /* OBS */
   .obs-section { border-top: 1px solid var(--border); padding-top: 8px; }
   .obs-label { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; margin-bottom: 4px; }
   .obs-text { font-size: 12px; color: #a0a8c0; line-height: 1.5; min-height: 20px; }
@@ -99,13 +95,17 @@
   .obs-add button { background: transparent; border: 1px solid var(--border); color: var(--muted); padding: 5px 10px; border-radius: 6px; cursor: pointer; font-size: 12px; transition: all .15s; white-space: nowrap; }
   .obs-add button:hover { border-color: var(--accent); color: var(--accent); }
 
-  /* EMPTY */
+  /* Estado selector dropdown */
+  .estado-select { background: var(--surface2); border: 1px solid var(--border); color: var(--text); padding: 4px 8px; border-radius: 6px; font-size: 11px; cursor: pointer; outline: none; margin-top: 6px; width: 100%; }
+  .estado-select:focus { border-color: var(--accent); }
+
   .empty-state { grid-column: 1/-1; text-align: center; padding: 3rem; color: var(--muted); font-size: 13px; }
 
-  /* STATS */
-  .stats-bar { display: flex; gap: 1.5rem; padding: .6rem 1.5rem; border-bottom: 1px solid var(--border); flex-wrap: wrap; }
-  .stat { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--muted); }
-  .stat strong { color: var(--text); font-family: var(--mono); }
+  /* Toast */
+  .toast { position: fixed; bottom: 1.5rem; right: 1.5rem; background: var(--surface); border: 1px solid var(--border); color: var(--text); padding: 10px 16px; border-radius: 8px; font-size: 13px; z-index: 999; opacity: 0; transform: translateY(8px); transition: all .2s; pointer-events: none; }
+  .toast.show { opacity: 1; transform: translateY(0); }
+  .toast.ok { border-color: var(--ok); color: var(--ok); }
+  .toast.err { border-color: var(--danger); color: var(--danger); }
 
   @media (max-width: 600px) {
     .grid { grid-template-columns: 1fr; padding: .75rem; }
@@ -131,18 +131,16 @@
 <div id="setup-section" class="setup-wrap">
   <div class="setup-card">
     <h2>⚙ Configuración inicial</h2>
-    <p>
-      Pegá el ID de tu Google Sheet publicada y el nombre exacto de la hoja.<br>
-      Columnas requeridas (en orden): <code>NOMBRE</code> · <code>URL</code> · <code>ICONO</code> · <code>DESCRIPCION</code> · <code>A</code> · <code>back</code> · <code>COD</code> · <code>online</code> · <code>S</code> · <code>VUELVE</code> · <code>ESTADO</code> · <code>CUENTA</code> · <code>OBSERVACIONES</code><br><br>
-      Para publicar la Sheet: <strong>Archivo → Compartir → Publicar en la web → Hoja → Publicar</strong>.<br>
-      El ID está en la URL entre <code>/d/</code> y <code>/edit</code>.
-    </p>
+    <p>Pegá el ID de tu Google Sheet y la URL del Apps Script para poder guardar cambios.</p>
     <div class="field-row">
       <input id="cfg-id" type="text" placeholder="ID de la Google Sheet" />
       <input id="cfg-sheet" type="text" placeholder="Nombre de la hoja" value="HERRAMIENTAS" />
+    </div>
+    <div class="field-row">
+      <input id="cfg-script" type="text" placeholder="URL del Apps Script (para guardar cambios)" />
       <button class="btn-primary" onclick="saveConfig()">Conectar →</button>
     </div>
-    <p style="margin-top:10px;font-size:11px;color:var(--muted);" id="cfg-error"></p>
+    <p style="margin-top:8px;font-size:11px;color:var(--muted);" id="cfg-error"></p>
   </div>
 </div>
 
@@ -160,19 +158,24 @@
   <div class="grid" id="cards-grid"></div>
 </div>
 
+<div class="toast" id="toast"></div>
+
 <script>
 let tools = [];
 let filter = 'all';
 let sheetId = localStorage.getItem('ht_sheet_id') || '';
 let sheetName = localStorage.getItem('ht_sheet_name') || 'HERRAMIENTAS';
+let scriptUrl = localStorage.getItem('ht_script_url') || '';
 
 function saveConfig() {
   const id = document.getElementById('cfg-id').value.trim();
   const name = document.getElementById('cfg-sheet').value.trim() || 'HERRAMIENTAS';
+  const script = document.getElementById('cfg-script').value.trim();
   if (!id) { document.getElementById('cfg-error').textContent = 'Ingresá el ID de la Sheet.'; return; }
   localStorage.setItem('ht_sheet_id', id);
   localStorage.setItem('ht_sheet_name', name);
-  sheetId = id; sheetName = name;
+  if (script) localStorage.setItem('ht_script_url', script);
+  sheetId = id; sheetName = name; scriptUrl = script;
   loadSheet();
 }
 
@@ -180,6 +183,7 @@ function init() {
   if (sheetId) {
     document.getElementById('cfg-id').value = sheetId;
     document.getElementById('cfg-sheet').value = sheetName;
+    if (scriptUrl) document.getElementById('cfg-script').value = scriptUrl;
     document.getElementById('setup-section').style.display = 'none';
     document.getElementById('app-section').style.display = 'block';
     loadSheet();
@@ -197,43 +201,40 @@ async function loadSheet() {
     const text = await res.text();
     const json = JSON.parse(text.match(/google\.visualization\.Query\.setResponse\(([\s\S]*)\)/)[1]);
     const rows = json.table.rows;
-    tools = rows
-      .filter(r => r.c[0]?.v)
-      .map(r => ({
-        nombre:       r.c[0]?.v  || '',
-        url:          r.c[1]?.v  || '',
-        icono:        r.c[2]?.v  || '',
-        descripcion:  r.c[3]?.v  || '',
-        a:            r.c[4]?.v  || '',
-        back:         r.c[5]?.v  || '',
-        cod:          r.c[6]?.v  || '',
-        online:       r.c[7]?.v  || '',
-        s:            r.c[8]?.v  || '',
-        vuelve:       r.c[9]?.v  || '',
-        estado:       (r.c[10]?.v || '').toLowerCase().trim(),
-        cuenta:       r.c[11]?.v || '',
-        observaciones:r.c[12]?.v || '',
-      }));
+    tools = rows.filter(r => r.c[0]?.v).map(r => ({
+      nombre:        r.c[0]?.v  || '',
+      url:           r.c[1]?.v  || '',
+      icono:         r.c[2]?.v  || '',
+      descripcion:   r.c[3]?.v  || '',
+      a:             r.c[4]?.v  || '',
+      back:          r.c[5]?.v  || '',
+      cod:           r.c[6]?.v  || '',
+      online:        r.c[7]?.v  || '',
+      s:             r.c[8]?.v  || '',
+      vuelve:        r.c[9]?.v  || '',
+      estado:        (r.c[10]?.v || '').toLowerCase().trim(),
+      cuenta:        r.c[11]?.v || '',
+      observaciones: r.c[12]?.v || '',
+    }));
     document.getElementById('last-update').textContent = new Date().toLocaleTimeString('es-AR');
     document.getElementById('badge-count').textContent = tools.length + ' apps';
     updateStats();
     renderCards();
   } catch(e) {
-    document.getElementById('cards-grid').innerHTML = `<div class="empty-state">❌ No se pudo leer la Sheet.<br><small style="color:var(--muted)">Verificá que esté publicada y que el ID sea correcto.</small></div>`;
+    document.getElementById('cards-grid').innerHTML = `<div class="empty-state">❌ No se pudo leer la Sheet.</div>`;
   }
 }
 
 function updateStats() {
-  const counts = { trabajando:0, correcto:0, esperar:0, pendiente:0, descartada:0 };
-  tools.forEach(t => { if (counts[t.estado] !== undefined) counts[t.estado]++; });
+  const c = { trabajando:0, correcto:0, esperar:0, pendiente:0, descartada:0 };
+  tools.forEach(t => { if (c[t.estado] !== undefined) c[t.estado]++; });
   document.getElementById('stats-bar').innerHTML = `
     <div class="stat"><strong>${tools.length}</strong> total</div>
-    <div class="stat" style="color:var(--accent)"><strong>${counts.trabajando}</strong> en trabajo</div>
-    <div class="stat" style="color:var(--ok)"><strong>${counts.correcto}</strong> correctas</div>
-    <div class="stat" style="color:var(--warn)"><strong>${counts.esperar}</strong> esperando</div>
-    <div class="stat" style="color:var(--pending)"><strong>${counts.pendiente}</strong> pendientes</div>
-    <div class="stat" style="color:var(--danger)"><strong>${counts.descartada}</strong> descartadas</div>
-  `;
+    <div class="stat" style="color:var(--accent)"><strong>${c.trabajando}</strong> en trabajo</div>
+    <div class="stat" style="color:var(--ok)"><strong>${c.correcto}</strong> correctas</div>
+    <div class="stat" style="color:var(--warn)"><strong>${c.esperar}</strong> esperando</div>
+    <div class="stat" style="color:var(--pending)"><strong>${c.pendiente}</strong> pendientes</div>
+    <div class="stat" style="color:var(--danger)"><strong>${c.descartada}</strong> descartadas</div>`;
 }
 
 function setFilter(f, btn) {
@@ -244,40 +245,38 @@ function setFilter(f, btn) {
 }
 
 function badgeClass(e) {
-  const map = { ok:'b-ok', correcto:'b-correcto', trabajando:'b-trabajando', esperar:'b-esperar', pendiente:'b-pendiente', descartada:'b-descartada' };
-  return map[e] || 'b-esperar';
+  return { ok:'b-ok', correcto:'b-correcto', trabajando:'b-trabajando', esperar:'b-esperar', pendiente:'b-pendiente', descartada:'b-descartada' }[e] || 'b-esperar';
 }
 function badgeLabel(e) {
-  const map = { ok:'OK', correcto:'Correcto', trabajando:'Trabajando', esperar:'Esperar', pendiente:'Pendiente', descartada:'Descartada' };
-  return map[e] || e || '—';
+  return { ok:'OK', correcto:'Correcto', trabajando:'Trabajando', esperar:'Esperar', pendiente:'Pendiente', descartada:'Descartada' }[e] || e || '—';
 }
 
 function renderCards() {
   const q = document.getElementById('search-input')?.value?.toLowerCase() || '';
   const list = tools.filter(t => {
-    const matchFilter = filter === 'all' || t.estado === filter;
-    const matchSearch = !q || t.nombre.toLowerCase().includes(q) || t.descripcion.toLowerCase().includes(q) || t.icono.toLowerCase().includes(q);
-    return matchFilter && matchSearch;
+    const mf = filter === 'all' || t.estado === filter;
+    const ms = !q || t.nombre.toLowerCase().includes(q) || t.descripcion.toLowerCase().includes(q) || t.icono.toLowerCase().includes(q);
+    return mf && ms;
   });
   const grid = document.getElementById('cards-grid');
   if (!list.length) { grid.innerHTML = '<div class="empty-state">No hay herramientas en esta categoría.</div>'; return; }
 
-  grid.innerHTML = list.map((t, i) => {
+  grid.innerHTML = list.map(t => {
     const idx = tools.indexOf(t);
     const ec = 'estado-' + (t.estado || 'esperar');
     const bc = badgeClass(t.estado);
     const bl = badgeLabel(t.estado);
-    const obs = t.observaciones
+    const obsHtml = t.observaciones
       ? `<div class="obs-text" id="obs-${idx}">${escHtml(t.observaciones)}</div>`
       : `<div class="obs-text obs-empty" id="obs-${idx}">Sin observaciones</div>`;
     return `
-    <div class="card ${ec}">
+    <div class="card ${ec}" id="card-${idx}">
       <div class="card-top">
         <div>
           <div class="card-name">${escHtml(t.nombre)}</div>
           <div class="card-desc">${escHtml(t.descripcion)}</div>
         </div>
-        <span class="badge-estado ${bc}">${bl}</span>
+        <span class="badge-estado ${bc}" title="Clic para cambiar estado">${bl}</span>
       </div>
       <div class="card-meta">
         ${t.icono ? `<span class="tag tag-icono">${escHtml(t.icono)}</span>` : ''}
@@ -285,11 +284,19 @@ function renderCards() {
         ${t.online !== '' && t.online !== null ? `<span class="tag">online: ${escHtml(String(t.online))}</span>` : ''}
         ${t.url ? `<a class="link-open" href="${escHtml(t.url)}" target="_blank">↗ Abrir</a>` : ''}
       </div>
-      ${t.cuenta ? `<div class="meta-email"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="3" width="14" height="10" rx="1"/><path d="M1 4l7 5 7-5"/></svg>${escHtml(t.cuenta)}</div>` : ''}
+      ${t.cuenta ? `<div class="meta-email">✉ ${escHtml(t.cuenta)}</div>` : ''}
       ${t.vuelve ? `<div class="card-deploy">⏰ Vuelve: ${escHtml(String(t.vuelve))}</div>` : ''}
+      <select class="estado-select" onchange="cambiarEstado(${idx}, this.value)">
+        <option value="">— Cambiar estado —</option>
+        <option value="trabajando">Trabajando</option>
+        <option value="correcto">Correcto</option>
+        <option value="esperar">Esperar</option>
+        <option value="pendiente">Pendiente</option>
+        <option value="descartada">Descartada</option>
+      </select>
       <div class="obs-section">
         <div class="obs-label">Observaciones</div>
-        ${obs}
+        ${obsHtml}
         <div class="obs-add">
           <input type="text" id="obs-inp-${idx}" placeholder="Agregar nota…" onkeydown="if(event.key==='Enter')addObs(${idx})" />
           <button onclick="addObs(${idx})">+ Guardar</button>
@@ -303,20 +310,67 @@ function escHtml(s) {
   return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 
-function addObs(idx) {
+async function callScript(payload) {
+  if (!scriptUrl) { showToast('No hay Apps Script configurado', 'err'); return false; }
+  try {
+    await fetch(scriptUrl, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+    return true;
+  } catch(e) {
+    showToast('Error al guardar: ' + e.message, 'err');
+    return false;
+  }
+}
+
+async function addObs(idx) {
   const inp = document.getElementById(`obs-inp-${idx}`);
   if (!inp) return;
   const val = inp.value.trim();
   if (!val) return;
+  const btn = inp.nextElementSibling;
+  btn.textContent = '…';
+  btn.disabled = true;
+
+  const ok = await callScript({ action: 'addObs', nombre: tools[idx].nombre, obs: val });
+
   const ts = new Date().toLocaleString('es-AR', {day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});
   const nuevo = `[${ts}] ${val}`;
   tools[idx].observaciones = tools[idx].observaciones ? tools[idx].observaciones + ' · ' + nuevo : nuevo;
   const el = document.getElementById(`obs-${idx}`);
   if (el) { el.classList.remove('obs-empty'); el.textContent = tools[idx].observaciones; }
   inp.value = '';
-  const btn = inp.nextElementSibling;
-  btn.textContent = '✓ Guardado';
+  btn.textContent = '✓';
+  btn.disabled = false;
   setTimeout(() => btn.textContent = '+ Guardar', 1800);
+  showToast('Observación guardada en la Sheet ✓', 'ok');
+}
+
+async function cambiarEstado(idx, nuevoEstado) {
+  if (!nuevoEstado) return;
+  const ok = await callScript({ action: 'update', nombre: tools[idx].nombre, campo: 'estado', valor: nuevoEstado });
+  tools[idx].estado = nuevoEstado;
+  const card = document.getElementById(`card-${idx}`);
+  if (card) {
+    card.className = `card estado-${nuevoEstado}`;
+    const badge = card.querySelector('.badge-estado');
+    if (badge) {
+      badge.className = `badge-estado ${badgeClass(nuevoEstado)}`;
+      badge.textContent = badgeLabel(nuevoEstado);
+    }
+  }
+  updateStats();
+  showToast(`Estado cambiado a ${badgeLabel(nuevoEstado)} ✓`, 'ok');
+}
+
+function showToast(msg, type) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = `toast ${type} show`;
+  setTimeout(() => t.className = 'toast', 2500);
 }
 
 init();
