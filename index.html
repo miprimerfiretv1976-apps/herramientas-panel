@@ -276,7 +276,7 @@ function renderCards() {
           <div class="card-name">${escHtml(t.nombre)}</div>
           <div class="card-desc">${escHtml(t.descripcion)}</div>
         </div>
-        <span class="badge-estado ${bc}" title="Clic para cambiar estado">${bl}</span>
+        <span class="badge-estado ${bc}">${bl}</span>
       </div>
       <div class="card-meta">
         ${t.icono ? `<span class="tag tag-icono">${escHtml(t.icono)}</span>` : ''}
@@ -287,12 +287,12 @@ function renderCards() {
       ${t.cuenta ? `<div class="meta-email">✉ ${escHtml(t.cuenta)}</div>` : ''}
       ${t.vuelve ? `<div class="card-deploy">⏰ Vuelve: ${escHtml(String(t.vuelve))}</div>` : ''}
       <select class="estado-select" onchange="cambiarEstado(${idx}, this.value)">
-        <option value="">— Cambiar estado —</option>
-        <option value="trabajando">Trabajando</option>
-        <option value="correcto">Correcto</option>
-        <option value="esperar">Esperar</option>
-        <option value="pendiente">Pendiente</option>
-        <option value="descartada">Descartada</option>
+        <option value="" disabled>— Estado —</option>
+        <option value="trabajando" ${t.estado==='trabajando'?'selected':''}>🔵 Trabajando</option>
+        <option value="correcto" ${t.estado==='correcto'?'selected':''}>🟢 Correcto</option>
+        <option value="esperar" ${t.estado==='esperar'?'selected':''}>🟡 Esperar</option>
+        <option value="pendiente" ${t.estado==='pendiente'?'selected':''}>🟣 Pendiente</option>
+        <option value="descartada" ${t.estado==='descartada'?'selected':''}>🔴 Descartada</option>
       </select>
       <div class="obs-section">
         <div class="obs-label">Observaciones</div>
