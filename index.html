@@ -177,9 +177,9 @@
 <script>
 let tools = [];
 let filter = 'all';
-let sheetId = localStorage.getItem('ht_sheet_id') || '10irlDgBgsMVTTI4C1l-otFsNjhhWJr1otr4X3JXKT00';
-let sheetName = localStorage.getItem('ht_sheet_name') || 'HERRAMIENTAS';
-let scriptUrl = localStorage.getItem('ht_script_url') || 'https://script.google.com/macros/s/AKfycbxZ2ZVMOXAVVAxCPmtGE8q_yQT6mQpTWcf-X0IrpjI7Tcyq1ub3xZCoFO3gKcvebKR3/exec';
+let sheetId = '10irlDgBgsMVTTI4C1l-otFsNjhhWJr1otr4X3JXKT00';
+let sheetName = 'HERRAMIENTAS';
+let scriptUrl = 'https://script.google.com/macros/s/AKfycbxZ2ZVMOXAVVAxCPmtGE8q_yQT6mQpTWcf-X0IrpjI7Tcyq1ub3xZCoFO3gKcvebKR3/exec';
 
 function saveConfig() {
   const id = document.getElementById('cfg-id').value.trim();
@@ -193,7 +193,7 @@ function saveConfig() {
   loadSheet();
 }
 
-function init() { sheetId = sheetId || "10irlDgBgsMVTTI4C1l-otFsNjhhWJr1otr4X3JXKT00"; scriptUrl = scriptUrl || "https://script.google.com/macros/s/AKfycbxZ2ZVMOXAVVAxCPmtGE8q_yQT6mQpTWcf-X0IrpjI7Tcyq1ub3xZCoFO3gKcvebKR3/exec";
+function init() {
   if (sheetId) {
     document.getElementById('cfg-id').value = sheetId;
     document.getElementById('cfg-sheet').value = sheetName;
