@@ -328,12 +328,9 @@ function escHtml(s) {
 async function callScript(payload) {
   if (!scriptUrl) { showToast('No hay Apps Script configurado', 'err'); return false; }
   try {
-    await fetch(scriptUrl, {
-      method: 'POST',
-      mode: 'no-cors',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload)
-    });
+    // Usar GET con parámetros para evitar problema CORS con POST
+    const params = new URLSearchParams({ data: JSON.stringify(payload) });
+    await fetch(scriptUrl + '?' + params.toString(), { mode: 'no-cors' });
     return true;
   } catch(e) {
     showToast('Error al guardar: ' + e.message, 'err');
