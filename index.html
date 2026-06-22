@@ -327,14 +327,17 @@ function escHtml(s) {
 
 async function callScript(payload) {
   if (!scriptUrl) { showToast('No hay Apps Script configurado', 'err'); return false; }
-  try {
+  return new Promise((resolve) => {
     const url = scriptUrl + '?data=' + encodeURIComponent(JSON.stringify(payload));
-    await fetch(url, { mode: 'no-cors' });
-    return true;
-  } catch(e) {
-    showToast('Error al guardar: ' + e.message, 'err');
-    return false;
-  }
+    const iframe = document.createElement('iframe');
+    iframe.style.display = 'none';
+    iframe.src = url;
+    iframe.onload = () => { document.body.removeChild(iframe); resolve(true); };
+    iframe.onerror = () => { document.body.removeChild(iframe); resolve(false); };
+    document.body.appendChild(iframe);
+    // Fallback: resolve after 4 seconds regardless
+    setTimeout(() => { try { document.body.removeChild(iframe); } catch(e){} resolve(true); }, 4000);
+  });
 }
 
 async function addObs(idx) {
