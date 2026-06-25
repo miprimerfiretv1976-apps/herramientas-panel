@@ -403,12 +403,18 @@ async function confirmarPin() {
     return;
   }
   cerrarModal();
-  const ok = await callScript({ action: "eliminar", nombre: pendingDeleteNombre });
-  tools = tools.filter(t => t.nombre !== pendingDeleteNombre);
-  document.getElementById("badge-count").textContent = tools.length + " apps";
-  updateStats();
-  renderCards();
-  showToast("Herramienta eliminada ✓", "ok");
+  // Abrir en pestaña nueva para evitar CORS
+  const url = scriptUrl + '?data=' + encodeURIComponent(JSON.stringify({ action: 'eliminar', nombre: pendingDeleteNombre }));
+  window.open(url, '_blank');
+  // Actualizar panel local
+  const nombreBorrado = pendingDeleteNombre;
+  setTimeout(() => {
+    tools = tools.filter(t => t.nombre !== nombreBorrado);
+    document.getElementById("badge-count").textContent = tools.length + " apps";
+    updateStats();
+    renderCards();
+    showToast("Herramienta eliminada ✓ — recargá para confirmar", "ok");
+  }, 2000);
 }
 
 
