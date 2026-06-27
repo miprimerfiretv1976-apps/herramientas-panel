@@ -1,0 +1,148 @@
+// COPIHUE HERRAMIENTAS - Apps Script Web App v3
+// Pegar en: Extensiones → Apps Script → reemplazar todo → Guardar → Implementar nueva versión
+
+const SHEET_NAME = 'HERRAMIENTAS';
+
+function doGet(e) {
+  if (e && e.parameter && e.parameter.action === 'normalizar') {
+    return normalizarEstados();
+  }
+  if (e && e.parameter && e.parameter.data) {
+    try {
+      const data = JSON.parse(e.parameter.data);
+      const action = data.action;
+      if (action === 'update')   return updateRow(data);
+      if (action === 'addObs')   return addObservacion(data);
+      if (action === 'eliminar') return eliminarFilaHtml(data);
+    } catch(err) {
+      return resp({ status: 'error', msg: err.toString() });
+    }
+  }
+  return ContentService
+    .createTextOutput(JSON.stringify({ status: 'ok', msg: 'Herramientas API v3 activa' }))
+    .setMimeType(ContentService.MimeType.JSON);
+}
+
+function doPost(e) {
+  try {
+    const data = JSON.parse(e.postData.contents);
+    const action = data.action;
+    if (action === 'update')   return updateRow(data);
+    if (action === 'addObs')   return addObservacion(data);
+    if (action === 'eliminar') return eliminarFila(data);
+    return resp({ status: 'error', msg: 'Acción desconocida' });
+  } catch (err) {
+    return resp({ status: 'error', msg: err.toString() });
+  }
+}
+
+function normalizarEstados() {
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const sheet = ss.getSheetByName(SHEET_NAME);
+  const rows = sheet.getDataRange().getValues();
+  const headers = rows[0].map(h => h.toString().trim().toUpperCase());
+  const estadoCol = headers.indexOf('ESTADO');
+  if (estadoCol === -1) return resp({ status: 'error', msg: 'Columna ESTADO no encontrada' });
+  const validos = ['TRABAJANDO', 'CORRECTO', 'ESPERAR', 'PENDIENTE', 'DESCARTADA'];
+  let count = 0;
+  for (let i = 1; i < rows.length; i++) {
+    const val = rows[i][estadoCol];
+    if (!val) continue;
+    const normalizado = val.toString().trim().toUpperCase();
+    if (validos.includes(normalizado) && normalizado !== val.toString()) {
+      sheet.getRange(i + 1, estadoCol + 1).setValue(normalizado);
+      count++;
+    }
+  }
+  return ContentService
+    .createTextOutput(JSON.stringify({ status: 'ok', msg: count + ' estados normalizados' }))
+    .setMimeType(ContentService.MimeType.JSON);
+}
+
+function updateRow(data) {
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const sheet = ss.getSheetByName(SHEET_NAME);
+  const rows = sheet.getDataRange().getValues();
+  const headers = rows[0].map(h => h.toString().trim().toUpperCase());
+  const colMap = {
+    'version':       headers.indexOf('VERSION'),
+    'estado':        headers.indexOf('ESTADO'),
+    'observaciones': headers.indexOf('OBSERVACIONES'),
+    'email':         headers.indexOf('CUENTA / EMAIL'),
+    'vuelve':        headers.indexOf('VUELVE'),
+  };
+  const colIdx = colMap[data.campo.toLowerCase()];
+  if (colIdx === -1 || colIdx === undefined) {
+    return resp({ status: 'error', msg: 'Campo no encontrado: ' + data.campo });
+  }
+  let valor = data.valor;
+  if (data.campo.toLowerCase() === 'estado') {
+    valor = valor.toString().toUpperCase();
+  }
+  for (let i = 1; i < rows.length; i++) {
+    if (rows[i][0].toString().trim() === data.nombre.trim()) {
+      sheet.getRange(i + 1, colIdx + 1).setValue(valor);
+      return resp({ status: 'ok', msg: 'Actualizado', fila: i + 1 });
+    }
+  }
+  return resp({ status: 'error', msg: 'Herramienta no encontrada: ' + data.nombre });
+}
+
+function addObservacion(data) {
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const sheet = ss.getSheetByName(SHEET_NAME);
+  const rows = sheet.getDataRange().getValues();
+  const headers = rows[0].map(h => h.toString().trim().toUpperCase());
+  const obsCol = headers.indexOf('OBSERVACIONES');
+  for (let i = 1; i < rows.length; i++) {
+    if (rows[i][0].toString().trim() === data.nombre.trim()) {
+      const actual = rows[i][obsCol] ? rows[i][obsCol].toString() : '';
+      const ts = Utilities.formatDate(new Date(), 'America/Argentina/Buenos_Aires', 'dd/MM/yyyy HH:mm');
+      const nuevo = actual ? actual + ' · [' + ts + '] ' + data.obs : '[' + ts + '] ' + data.obs;
+      sheet.getRange(i + 1, obsCol + 1).setValue(nuevo);
+      return resp({ status: 'ok', msg: 'Observacion guardada' });
+    }
+  }
+  return resp({ status: 'error', msg: 'No encontrada: ' + data.nombre });
+}
+
+function eliminarFila(data) {
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const sheet = ss.getSheetByName(SHEET_NAME);
+  const rows = sheet.getDataRange().getValues();
+  for (let i = 1; i < rows.length; i++) {
+    if (rows[i][0].toString().trim() === data.nombre.trim()) {
+      sheet.deleteRow(i + 1);
+      return resp({ status: 'ok', msg: 'Fila eliminada: ' + data.nombre });
+    }
+  }
+  return resp({ status: 'error', msg: 'No encontrada: ' + data.nombre });
+}
+
+function eliminarFilaHtml(data) {
+  const result = eliminarFila(data);
+  const parsed = JSON.parse(result.getContent());
+  if (parsed.status === 'ok') {
+    return respHtml('✅ Eliminada', '"' + data.nombre + '" fue eliminada correctamente.', '#3dd68c');
+  }
+  return respHtml('❌ Error', parsed.msg, '#f04a4a');
+}
+
+function respHtml(titulo, msg, color) {
+  const html = '<!DOCTYPE html><html><head><meta charset="UTF-8">' +
+    '<style>body{margin:0;display:flex;align-items:center;justify-content:center;min-height:100vh;background:#0f1117;font-family:sans-serif;}' +
+    '.box{text-align:center;padding:2rem;}' +
+    'h2{color:' + color + ';margin-bottom:.5rem;font-size:24px;}' +
+    'p{color:#7a8099;font-size:14px;margin-bottom:1.5rem;}' +
+    '.closing{color:#3e4460;font-size:12px;}</style>' +
+    '<script>setTimeout(function(){document.querySelector(".closing").textContent="Podés cerrar esta pestaña.";},1000);</script></head>' +
+    '<body><div class="box"><h2>' + titulo + '</h2><p>' + msg + '</p>' +
+    '<div class="closing">Cerrando…</div></div></body></html>';
+  return HtmlService.createHtmlOutput(html);
+}
+
+function resp(obj) {
+  return ContentService
+    .createTextOutput(JSON.stringify(obj))
+    .setMimeType(ContentService.MimeType.JSON);
+}
