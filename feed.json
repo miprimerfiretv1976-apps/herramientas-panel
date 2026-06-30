@@ -19,7 +19,7 @@
         "live": true
       },
       "genres": ["news"],
-      "thumbnail": "https://herramientas-panel.vercel.app/tvn-logo.png"
+      "thumbnail": "https://herramientas-panel.vercel.app/tv/tvn-logo.png"
     },
     {
       "id": "mega-live",
@@ -37,7 +37,7 @@
         "live": true
       },
       "genres": ["entertainment"],
-      "thumbnail": "https://herramientas-panel.vercel.app/mega-logo.png"
+      "thumbnail": "https://herramientas-panel.vercel.app/tv/mega-logo.png"
     },
     {
       "id": "telesur-live",
@@ -55,7 +55,7 @@
         "live": true
       },
       "genres": ["news"],
-      "thumbnail": "https://herramientas-panel.vercel.app/telesur-logo.png"
+      "thumbnail": "https://herramientas-panel.vercel.app/tv/telesur-logo.png"
     }
   ]
 }
