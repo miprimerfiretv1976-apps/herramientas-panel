@@ -1,0 +1,61 @@
+{
+  "providerName": "TVN Chile",
+  "language": "es",
+  "lastUpdated": "2026-06-30T00:00:00Z",
+  "movies": [
+    {
+      "id": "tvn-live",
+      "title": "TVN Chile en vivo",
+      "content": {
+        "dateAdded": "2026-06-30T00:00:00Z",
+        "videos": [
+          {
+            "url": "http://138.121.15.230:9002/TVN/index.m3u8",
+            "quality": "HD",
+            "videoType": "HLS"
+          }
+        ],
+        "duration": 0,
+        "live": true
+      },
+      "genres": ["news"],
+      "thumbnail": "https://herramientas-panel.vercel.app/tvn-logo.png"
+    },
+    {
+      "id": "mega-live",
+      "title": "Mega en vivo",
+      "content": {
+        "dateAdded": "2026-06-30T00:00:00Z",
+        "videos": [
+          {
+            "url": "https://unlimited1-cl-isp.dps.live/mega/mega.smil/playlist.m3u8",
+            "quality": "HD",
+            "videoType": "HLS"
+          }
+        ],
+        "duration": 0,
+        "live": true
+      },
+      "genres": ["entertainment"],
+      "thumbnail": "https://herramientas-panel.vercel.app/mega-logo.png"
+    },
+    {
+      "id": "telesur-live",
+      "title": "Telesur en vivo",
+      "content": {
+        "dateAdded": "2026-06-30T00:00:00Z",
+        "videos": [
+          {
+            "url": "https://mblesmain01.telesur.ultrabase.net/mbliveMain/hd/playlist.m3u8",
+            "quality": "HD",
+            "videoType": "HLS"
+          }
+        ],
+        "duration": 0,
+        "live": true
+      },
+      "genres": ["news"],
+      "thumbnail": "https://herramientas-panel.vercel.app/telesur-logo.png"
+    }
+  ]
+}
