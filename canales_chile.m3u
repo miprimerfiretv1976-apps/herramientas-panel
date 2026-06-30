@@ -1,0 +1,32 @@
+#EXTM3U
+#PLAYLIST: Argentina FTA Completa - Junio 2026
+
+#EXTINF:-1 tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0a/Logo_Telefe.svg/512px-Logo_Telefe.svg.png" group-title="Argentina",Telefe
+https://telefe.com/live/
+
+#EXTINF:-1 tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8f/El_Trece_2018.svg/512px-El_Trece_2018.svg.png" group-title="Argentina",Canal 13
+https://ar13hls-lh.akamaihd.net/i/AR13HLS_1@179085/master.m3u8
+
+#EXTINF:-1 tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Am%C3%A9rica_TV_2016.svg/512px-Am%C3%A9rica_TV_2016.svg.png" group-title="Argentina",América TV
+https://live.americatv.com.ar/hls/americatv.m3u8
+
+#EXTINF:-1 tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7d/C5N_logo.svg/512px-C5N_logo.svg.png" group-title="Argentina",C5N
+https://live.c5n.com/c5n/live.m3u8
+
+#EXTINF:-1 tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0f/LN%2B_logo.svg/512px-LN%2B_logo.svg.png" group-title="Argentina",LN+
+https://live.lnplus.ar/hls/lnplus.m3u8
+
+#EXTINF:-1 tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8f/Canal_26_logo.svg/512px-Canal_26_logo.svg.png" group-title="Argentina",Canal 26
+https://live-edge.canal26.com.ar/hls/canal26.m3u8
+
+#EXTINF:-1 tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/Telefe_Noticias_logo.svg/512px-Telefe_Noticias_logo.svg.png" group-title="Argentina",Telefe Noticias
+https://telefe.com/live/
+
+#EXTINF:-1 tvg-logo="https://i.imgur.com/0Z0Z0Z0.png" group-title="Argentina",Crónica TV
+https://cronicahd-lh.akamaihd.net/i/cronica_1@348064/master.m3u8
+
+#EXTINF:-1 tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9f/Logo_TN_2020.svg/512px-Logo_TN_2020.svg.png" group-title="Argentina",TN (Todo Noticias)
+https://tn-lh.akamaihd.net/i/TNHD_1@348064/master.m3u8
+
+#EXTINF:-1 tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5f/La_Nacion_Mas_logo.svg/512px-La_Nacion_Mas_logo.svg.png" group-title="Argentina",La Nación +
+https://live.lanacion.com.ar/hls/lanacion.m3u8
