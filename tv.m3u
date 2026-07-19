@@ -191,3 +191,61 @@ https://5dcabf026b188.streamlock.net/StreamUnife/livestream/playlist.m3u8
 https://cloud.tvomix.com/URBANMIX/index.m3u8
 #EXTINF:-1 group-title="Regionales",Villa Mantero TV
 https://micanal.ovh/livestreams/515.AUTOOAAZ721F.m3u8
+#EXTINF:-1 group-title="Chile",T13
+https://jireh-2-hls-video-us-isp.dps.live/hls-video/10b92cafdf3646cbc1e727f3dc76
+#EXTINF:-1 group-title="Chile",13C
+https://origin.dpsgo.com/ssai/event/GI-9cp_bT8KcerLpZwkuhw/master.m3u8
+#EXTINF:-1 group-title="Chile",13 Entretención
+https://origin.dpsgo.com/ssai/event/BBp0VeP6QtOOlH8nu3bWTg/master.m3u8
+#EXTINF:-1 group-title="Chile",13 Festival
+https://origin.dpsgo.com/ssai/event/Nftd0fM2SXasfDlRphvUsg/master.m3u8
+#EXTINF:-1 group-title="Chile",13 Humor
+https://origin.dpsgo.com/ssai/event/cKWySXKgSK-SzlJmESkOWw/master.m3u8
+#EXTINF:-1 group-title="Chile",13 Kids
+https://origin.dpsgo.com/ssai/event/LhHrVtyeQkKZ-Ye_xEU75g/master.m3u8
+#EXTINF:-1 group-title="Chile",13 Ulica
+http://91.146.94.234:10001/play/a088
+#EXTINF:-1 group-title="Chile",13 Teleseries
+https://origin.dpsgo.com/ssai/event/f4TrySe8SoiGF8Lu3EIq1g/master.m3u8
+#EXTINF:-1 group-title="Entretenimiento",80s Rewind
+https://jmp2.uk/plu-5ca525b650be2571e3943c63.m3u8
+#EXTINF:-1 group-title="Chile",Via X
+http://45.170.130.224:8000/play/a025/index.m3u8
+#EXTINF:-1 group-title="Regionales",UnionTV
+https://tigocloud.desdeparaguay.net/800tv/800tv/playlist.m3u8
+#EXTINF:-1 group-title="Regionales",Unife TV
+https://5dcabf026b188.streamlock.net/StreamUnife/livestream/playlist.m3u8
+#EXTINF:-1 group-title="Chile",UCV TV
+https://unlimited2-cl-isp.dps.live/ucvtv2/ucvtv2.smil/playlist.m3u8
+#EXTINF:-1 group-title="Regionales",UCL
+https://livedelta.cdn.antel.net.uy/out/u/url_canalu.m3u8
+#EXTINF:-1 group-title="Deportes",UEFA Champions League
+https://jmp2.uk/plu-65ea8b928145cb0008509426.m3u8
+#EXTINF:-1 group-title="Entretenimiento",00s Replay
+https://jmp2.uk/plu-62ba60f059624e000781c436.m3u8
+#EXTINF:-1 group-title="Entretenimiento",70s Cinema
+https://jmp2.uk/plu-5f4d878d3d19b30007d2e782.m3u8
+#EXTINF:-1 group-title="Entretenimiento",90s Throwback
+https://jmp2.uk/plu-5f4d86f519358a00072b978e.m3u8
+#EXTINF:-1 group-title="Noticias",CNNi
+https://jmp2.uk/plu-66c45afaa72e7b0008a2b153.m3u8
+#EXTINF:-1 group-title="Entretenimiento",Battlestar Galactica
+https://jmp2.uk/plu-69d7ebff029c431826bd328e.m3u8
+#EXTINF:-1 group-title="Entretenimiento",BET Cinema
+https://jmp2.uk/plu-58af4c093a41ca9d4ecabe96.m3u8
+#EXTINF:-1 group-title="Entretenimiento",Bollywood HD Russia
+https://xykt-fix.github.io/cinerama_edge01/hls/BOLLYWOOD_RU/Movie009.m3u8
+#EXTINF:-1 group-title="Entretenimiento",Pluto TV Cine Terror
+https://jmp2.uk/plu-5f12111c9e6c2c00078ef3bb.m3u8
+#EXTINF:-1 group-title="Entretenimiento",Pluto TV Crime Movies
+https://jmp2.uk/plu-5f4d8594eb979c0007706de7.m3u8
+#EXTINF:-1 group-title="Entretenimiento",Pluto TV Cine Clásico
+https://jmp2.uk/plu-61373bb45168fe000773eecd.m3u8
+#EXTINF:-1 group-title="Entretenimiento",Pluto TV Sci-Fi
+https://jmp2.uk/plu-60ed498c4248a400077c0b9d.m3u8
+#EXTINF:-1 group-title="Entretenimiento",Pluto TV Thrillers
+https://jmp2.uk/plu-5f1ac8a87cd38d000745d7cf.m3u8
+#EXTINF:-1 group-title="Entretenimiento",30A TV Classic Movies
+https://30a-tv.com/feeds/pzaz/30atvmovies.m3u8
+#EXTINF:-1 group-title="Chile",TVN 3
+https://mdstrm.com/live-stream-playlist/5653641561b4eba30a7e4929.m3u8
