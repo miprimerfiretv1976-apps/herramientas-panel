@@ -3,7 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Herramientas — Panel de control</title>
+<script>const APP_VERSION = 18;</script>
+<title id="page-title">Herramientas</title>
 <style>
   :root {
     --bg: #0f1117; --surface: #1a1d26; --surface2: #22263a; --border: #2e3347;
@@ -42,15 +43,36 @@
   .b-esperar { background: rgba(245,166,35,.15); color: var(--warn); }
   .b-pendiente { background: rgba(167,139,250,.15); color: var(--pending); }
   .b-descartada { background: rgba(240,74,74,.15); color: var(--danger); }
-  .card-meta { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
   .tag { font-size: 11px; font-family: var(--mono); background: var(--surface2); border: 1px solid var(--border); padding: 2px 7px; border-radius: 4px; color: var(--muted); }
   .tag-icono { color: var(--accent); border-color: rgba(79,142,247,.3); }
   .meta-email { font-size: 11px; color: var(--muted); }
-  .link-open { font-size: 11px; color: var(--accent); text-decoration: none; margin-left: auto; }
   .card-deploy { font-size: 11px; color: var(--muted); font-family: var(--mono); }
 
+  /* OPEN BUTTON — tarjeta grande */
+  .btn-open {
+    display: flex; align-items: center; justify-content: center; gap: 10px;
+    background: linear-gradient(135deg, rgba(79,142,247,.18) 0%, rgba(79,142,247,.08) 100%);
+    border: 1px solid rgba(79,142,247,.35);
+    border-radius: 8px; padding: 11px 14px;
+    text-decoration: none; color: var(--accent);
+    font-size: 13px; font-weight: 600;
+    transition: all .18s; cursor: pointer;
+    letter-spacing: .01em;
+  }
+  .btn-open:hover {
+    background: linear-gradient(135deg, rgba(79,142,247,.28) 0%, rgba(79,142,247,.14) 100%);
+    border-color: rgba(79,142,247,.6);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 16px rgba(79,142,247,.15);
+  }
+  .btn-open .open-icon { font-size: 18px; flex-shrink: 0; }
+  .btn-open .open-text { display: flex; flex-direction: column; align-items: flex-start; line-height: 1.3; }
+  .btn-open .open-label { font-size: 13px; font-weight: 700; }
+  .btn-open .open-url { font-size: 10px; color: var(--muted); font-family: var(--mono); font-weight: 400; max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .btn-open .open-arrow { font-size: 16px; margin-left: auto; flex-shrink: 0; opacity: .7; }
+
   /* VERSION BUMP */
-  .ver-row { display: flex; align-items: center; gap: 6px; margin-top: 2px; }
+  .ver-row { display: flex; align-items: center; gap: 6px; }
   .ver-num { font-size: 12px; font-family: var(--mono); color: var(--ok); font-weight: 700; min-width: 32px; }
   .ver-num.sin-ver { color: var(--muted); font-weight: 400; }
   .btn-bump { background: rgba(61,214,140,.1); border: 1px solid rgba(61,214,140,.3); color: var(--ok); padding: 3px 10px; border-radius: 6px; cursor: pointer; font-size: 11px; font-weight: 700; transition: all .15s; white-space: nowrap; }
@@ -70,8 +92,6 @@
   .obs-add input:focus { border-color: var(--accent); }
   .obs-add button { background: transparent; border: 1px solid var(--border); color: var(--muted); padding: 5px 10px; border-radius: 6px; cursor: pointer; font-size: 12px; white-space: nowrap; }
   .obs-add button:hover { border-color: var(--accent); color: var(--accent); }
-  .edit-email-row .obs-label { margin-top: 6px; }
-
   .btn-delete { background: transparent; border: 1px solid var(--border); color: var(--danger); padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 12px; width: 100%; margin-top: 4px; }
   .btn-delete:hover { background: rgba(240,74,74,.1); border-color: var(--danger); }
   .empty-state { grid-column: 1/-1; text-align: center; padding: 3rem; color: var(--muted); font-size: 13px; }
@@ -103,10 +123,7 @@
   .form-group label { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: .04em; display: block; margin-bottom: 4px; }
   .form-group input { width: 100%; background: var(--surface2); border: 1px solid var(--border); color: var(--text); padding: 7px 12px; border-radius: 8px; font-size: 13px; outline: none; }
   .form-group input:focus { border-color: var(--ok); }
-  @media (max-width: 600px) {
-    .grid { grid-template-columns: 1fr; padding: .75rem; }
-    .search-bar input { font-size: 13px; }
-  }
+  @media (max-width: 600px) { .grid { grid-template-columns: 1fr; padding: .75rem; } }
 </style>
 </head>
 <body>
@@ -114,7 +131,7 @@
 <div class="topbar">
   <div class="topbar-left">
     <span class="logo">🛠 <span>Herramientas</span></span>
-    <span class="ver-badge">v17</span>
+    <span class="ver-badge" id="header-ver"></span>
     <span class="badge-count" id="badge-count">— apps</span>
   </div>
   <div class="topbar-right">
@@ -134,7 +151,6 @@
 
 <div class="toast" id="toast"></div>
 
-<!-- MODAL ELIMINAR -->
 <div class="modal-bg" id="modal-eliminar">
   <div class="modal">
     <h3>🗑 Eliminar herramienta</h3>
@@ -148,7 +164,6 @@
   </div>
 </div>
 
-<!-- MODAL OBS -->
 <div class="modal-bg" id="modal-obs">
   <div class="modal-obs">
     <h3>✏ Editar observaciones</h3>
@@ -161,7 +176,6 @@
   </div>
 </div>
 
-<!-- MODAL NUEVA -->
 <div class="modal-bg" id="modal-nueva">
   <div class="modal-obs">
     <h3 style="color:var(--ok);">+ Nueva herramienta</h3>
@@ -182,9 +196,13 @@
 </div>
 
 <script>
+const APP_VERSION = 18;
 const SHEET_ID   = '10irlDgBgsMVTTI4C1l-otFsNjhhWJr1otr4X3JXKT00';
 const SHEET_NAME = 'HERRAMIENTAS';
 const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxZ2ZVMOXAVVAxCPmtGE8q_yQT6mQpTWcf-X0IrpjI7Tcyq1ub3xZCoFO3gKcvebKR3/exec';
+
+document.title = `Herramientas v${APP_VERSION}`;
+document.getElementById('header-ver').textContent = `v${APP_VERSION}`;
 
 let tools = [];
 let filter = 'all';
@@ -234,7 +252,6 @@ function updateStats() {
 }
 
 function setFilter(f) { filter = f; updateStats(); renderCards(); }
-
 const badgeClass = e => ({correcto:'b-correcto',trabajando:'b-trabajando',esperar:'b-esperar',pendiente:'b-pendiente',descartada:'b-descartada'}[e]||'b-esperar');
 const badgeLabel = e => ({correcto:'Correcto',trabajando:'Trabajando',esperar:'Esperar',pendiente:'Pendiente',descartada:'Descartada'}[e]||e||'—');
 
@@ -250,15 +267,30 @@ function renderCards() {
     const sel = ['trabajando','correcto','esperar','pendiente','descartada'].map(v=>`<option value="${v}"${t.estado===v?' selected':''}>${{trabajando:'🔵 Trabajando',correcto:'🟢 Correcto',esperar:'🟡 Esperar',pendiente:'🟣 Pendiente',descartada:'🔴 Descartada'}[v]}</option>`).join('');
     const verNum = t.version !== '' ? parseInt(t.version)||0 : null;
     const verLabel = verNum !== null ? `<span class="ver-num">v${verNum}</span>` : `<span class="ver-num sin-ver">sin ver</span>`;
+
+    // Botón abrir — solo si tiene URL
+    const urlValida = t.url && t.url !== 'null' && t.url.startsWith('http');
+    const urlCorta = urlValida ? t.url.replace(/^https?:\/\//, '').replace(/\/$/, '') : '';
+    const btnAbrir = urlValida ? `
+      <a class="btn-open" href="${esc(t.url)}" target="_blank" rel="noopener">
+        <span class="open-icon">🌐</span>
+        <span class="open-text">
+          <span class="open-label">Abrir aplicación</span>
+          <span class="open-url">${esc(urlCorta)}</span>
+        </span>
+        <span class="open-arrow">↗</span>
+      </a>` : '';
+
     return `<div class="card ${ec}" id="card-${idx}">
       <div class="card-top">
-        <div><div class="card-name">${esc(t.nombre)}</div><div class="card-desc">${esc(t.descripcion)}</div></div>
+        <div>
+          <div class="card-name">${esc(t.nombre)}</div>
+          <div class="card-desc">${esc(t.descripcion)}</div>
+        </div>
         <span class="badge-estado ${badgeClass(t.estado)}">${badgeLabel(t.estado)}</span>
       </div>
-      <div class="card-meta">
-        ${t.icono?`<span class="tag tag-icono">${esc(t.icono)}</span>`:''}
-        ${t.url&&t.url!=='null'?`<a class="link-open" href="${esc(t.url)}" target="_blank">↗ Abrir</a>`:''}
-      </div>
+      ${t.icono&&t.icono!=='null'?`<div><span class="tag tag-icono">${esc(t.icono)}</span></div>`:''}
+      ${btnAbrir}
       <div class="ver-row">
         ${verLabel}
         <button class="btn-bump" onclick="bumpVersion(${idx})" title="Incrementar versión +1">+1 bump</button>
@@ -278,7 +310,7 @@ function renderCards() {
           <button onclick="addObs(${idx})">+ Guardar</button>
         </div>
       </div>
-      <div class="edit-email-row">
+      <div>
         <div class="obs-label">
           <span>Email / Cuenta</span>
           <button onclick="toggleEditEmail(${idx})">✏ editar</button>
@@ -303,22 +335,18 @@ async function callScript(payload) {
   try { await fetch(url, { mode: 'no-cors' }); } catch(e) {}
 }
 
-// ── BUMP VERSION ──
 async function bumpVersion(idx) {
   const btn = document.querySelector(`#card-${idx} .btn-bump`);
   if (btn) { btn.disabled = true; btn.textContent = '…'; }
   const actual = tools[idx].version !== '' ? (parseInt(tools[idx].version)||0) : 0;
   const nueva = actual + 1;
-  // Bump + estado CORRECTO en un solo call cada uno
   await callScript({ action: 'update', nombre: tools[idx].nombre, campo: 'ver', valor: nueva });
   await callScript({ action: 'update', nombre: tools[idx].nombre, campo: 'estado', valor: 'CORRECTO' });
   tools[idx].version = String(nueva);
   tools[idx].estado = 'correcto';
   if (btn) { btn.disabled = false; btn.textContent = '+1 bump'; }
-  // Actualizar badge version en la card
   const verEl = document.querySelector(`#card-${idx} .ver-num`);
   if (verEl) { verEl.className = 'ver-num'; verEl.textContent = 'v' + nueva; }
-  // Actualizar badge estado
   const card = document.getElementById(`card-${idx}`);
   if (card) {
     card.className = 'card estado-correcto';
@@ -339,8 +367,7 @@ async function addObs(idx) {
   btn.textContent = '…'; btn.disabled = true;
   await callScript({ action: 'addObs', nombre: tools[idx].nombre, obs: val });
   const ts = new Date().toLocaleString('es-AR',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});
-  const nuevo = `[${ts}] ${val}`;
-  tools[idx].observaciones = tools[idx].observaciones ? tools[idx].observaciones + ' · ' + nuevo : nuevo;
+  tools[idx].observaciones = tools[idx].observaciones ? tools[idx].observaciones + ` · [${ts}] ${val}` : `[${ts}] ${val}`;
   const el = document.getElementById(`obs-${idx}`);
   if (el) { el.classList.remove('obs-empty'); el.textContent = tools[idx].observaciones; }
   inp.value = ''; btn.textContent = '✓'; btn.disabled = false;
@@ -362,7 +389,6 @@ async function cambiarEstado(idx, nuevoEstado) {
   showToast(`Estado → ${badgeLabel(nuevoEstado)} ✓`, 'ok');
 }
 
-// ── OBS MODAL ──
 function editarObs(idx) {
   pendingObsIdx = idx;
   document.getElementById('modal-obs-nombre').textContent = tools[idx].nombre;
@@ -378,14 +404,10 @@ async function guardarObsModal() {
   await callScript({ action: 'update', nombre: tools[idx].nombre, campo: 'observaciones', valor: val });
   tools[idx].observaciones = val;
   const el = document.getElementById(`obs-${idx}`);
-  if (el) {
-    if (val) { el.classList.remove('obs-empty'); el.textContent = val; }
-    else { el.classList.add('obs-empty'); el.textContent = 'Sin observaciones'; }
-  }
+  if (el) { el.className = val ? 'obs-text' : 'obs-text obs-empty'; el.textContent = val || 'Sin observaciones'; }
   showToast('Observaciones actualizadas ✓', 'ok');
 }
 
-// ── EMAIL ──
 function toggleEditEmail(idx) {
   const d = document.getElementById(`email-edit-${idx}`);
   d.style.display = d.style.display === 'none' ? 'block' : 'none';
@@ -401,7 +423,6 @@ async function guardarEmail(idx) {
   showToast('Email actualizado ✓', 'ok');
 }
 
-// ── ELIMINAR ──
 function abrirModalEliminar(idx) {
   pendingDeleteIdx = idx;
   document.getElementById('modal-nombre-text').textContent = '¿Eliminar "' + tools[idx].nombre + '" de la Sheet?';
@@ -428,7 +449,6 @@ function confirmarPin() {
   showToast('Eliminada ✓ — cerrá la pestaña', 'ok');
 }
 
-// ── NUEVA ──
 function abrirModalNueva() {
   ['nueva-nombre','nueva-url','nueva-icono','nueva-desc','nueva-email','nueva-ver','nueva-obs'].forEach(id => document.getElementById(id).value = '');
   document.getElementById('nueva-error').style.display = 'none';
