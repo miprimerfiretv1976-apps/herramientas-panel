@@ -3,8 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<script>const APP_VERSION = 18;</script>
-<title id="page-title">Herramientas</title>
+<title>Herramientas — Panel de control</title>
 <style>
   :root {
     --bg: #0f1117; --surface: #1a1d26; --surface2: #22263a; --border: #2e3347;
@@ -25,7 +24,7 @@
   .refresh-btn { background: transparent; border: 1px solid var(--border); color: var(--muted); padding: 5px 12px; border-radius: 6px; cursor: pointer; font-size: 12px; }
   .refresh-btn:hover { border-color: var(--accent); color: var(--accent); }
   .stats-bar { display: flex; gap: 1.5rem; padding: .6rem 1.5rem; border-bottom: 1px solid var(--border); flex-wrap: wrap; }
-  .stat { font-size: 12px; color: var(--muted); cursor: pointer; border-bottom: 2px solid transparent; padding-bottom: 2px; }
+  .stat { font-size: 12px; color: var(--muted); }
   .stat strong { color: var(--text); font-family: var(--mono); }
   .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 12px; padding: 1.25rem 1.5rem; }
   .card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 1rem 1.1rem; display: flex; flex-direction: column; gap: 8px; }
@@ -43,48 +42,16 @@
   .b-esperar { background: rgba(245,166,35,.15); color: var(--warn); }
   .b-pendiente { background: rgba(167,139,250,.15); color: var(--pending); }
   .b-descartada { background: rgba(240,74,74,.15); color: var(--danger); }
+  .card-meta { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
   .tag { font-size: 11px; font-family: var(--mono); background: var(--surface2); border: 1px solid var(--border); padding: 2px 7px; border-radius: 4px; color: var(--muted); }
   .tag-icono { color: var(--accent); border-color: rgba(79,142,247,.3); }
   .meta-email { font-size: 11px; color: var(--muted); }
+  .link-open { font-size: 11px; color: var(--accent); text-decoration: none; margin-left: auto; }
   .card-deploy { font-size: 11px; color: var(--muted); font-family: var(--mono); }
-
-  /* OPEN BUTTON — tarjeta grande */
-  .btn-open {
-    display: flex; align-items: center; justify-content: center; gap: 10px;
-    background: linear-gradient(135deg, rgba(79,142,247,.18) 0%, rgba(79,142,247,.08) 100%);
-    border: 1px solid rgba(79,142,247,.35);
-    border-radius: 8px; padding: 11px 14px;
-    text-decoration: none; color: var(--accent);
-    font-size: 13px; font-weight: 600;
-    transition: all .18s; cursor: pointer;
-    letter-spacing: .01em;
-  }
-  .btn-open:hover {
-    background: linear-gradient(135deg, rgba(79,142,247,.28) 0%, rgba(79,142,247,.14) 100%);
-    border-color: rgba(79,142,247,.6);
-    transform: translateY(-1px);
-    box-shadow: 0 4px 16px rgba(79,142,247,.15);
-  }
-  .btn-open .open-icon { font-size: 18px; flex-shrink: 0; }
-  .btn-open .open-text { display: flex; flex-direction: column; align-items: flex-start; line-height: 1.3; }
-  .btn-open .open-label { font-size: 13px; font-weight: 700; }
-  .btn-open .open-url { font-size: 10px; color: var(--muted); font-family: var(--mono); font-weight: 400; max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  .btn-open .open-arrow { font-size: 16px; margin-left: auto; flex-shrink: 0; opacity: .7; }
-
-  /* VERSION BUMP */
-  .ver-row { display: flex; align-items: center; gap: 6px; }
-  .ver-num { font-size: 12px; font-family: var(--mono); color: var(--ok); font-weight: 700; min-width: 32px; }
-  .ver-num.sin-ver { color: var(--muted); font-weight: 400; }
-  .btn-bump { background: rgba(61,214,140,.1); border: 1px solid rgba(61,214,140,.3); color: var(--ok); padding: 3px 10px; border-radius: 6px; cursor: pointer; font-size: 11px; font-weight: 700; transition: all .15s; white-space: nowrap; }
-  .btn-bump:hover { background: rgba(61,214,140,.2); }
-  .btn-bump:disabled { opacity: .4; cursor: default; }
-
   .estado-select { background: var(--surface2); border: 1px solid var(--border); color: var(--text); padding: 5px 8px; border-radius: 6px; font-size: 12px; cursor: pointer; outline: none; width: 100%; }
   .estado-select:focus { border-color: var(--accent); }
   .obs-section { border-top: 1px solid var(--border); padding-top: 8px; }
-  .obs-label { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; margin-bottom: 4px; display: flex; justify-content: space-between; align-items: center; }
-  .obs-label button { background: transparent; border: none; color: var(--muted); cursor: pointer; font-size: 11px; padding: 0; }
-  .obs-label button:hover { color: var(--accent); }
+  .obs-label { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; margin-bottom: 4px; }
   .obs-text { font-size: 12px; color: #a0a8c0; line-height: 1.5; }
   .obs-empty { font-style: italic; color: var(--border); }
   .obs-add { display: flex; gap: 6px; margin-top: 6px; }
@@ -95,9 +62,6 @@
   .btn-delete { background: transparent; border: 1px solid var(--border); color: var(--danger); padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 12px; width: 100%; margin-top: 4px; }
   .btn-delete:hover { background: rgba(240,74,74,.1); border-color: var(--danger); }
   .empty-state { grid-column: 1/-1; text-align: center; padding: 3rem; color: var(--muted); font-size: 13px; }
-  .search-bar { padding: .6rem 1.5rem; border-bottom: 1px solid var(--border); }
-  .search-bar input { width: 100%; background: var(--surface); border: 1px solid var(--border); color: var(--text); padding: 7px 12px; border-radius: 8px; font-size: 13px; outline: none; }
-  .search-bar input:focus { border-color: var(--accent); }
   .toast { position: fixed; bottom: 1.5rem; right: 1.5rem; background: var(--surface); border: 1px solid var(--border); color: var(--text); padding: 10px 16px; border-radius: 8px; font-size: 13px; z-index: 999; opacity: 0; transform: translateY(8px); transition: all .2s; pointer-events: none; }
   .toast.show { opacity: 1; transform: translateY(0); }
   .toast.ok { border-color: var(--ok); color: var(--ok); }
@@ -112,8 +76,6 @@
   .modal-error { font-size: 12px; color: var(--danger); text-align: center; margin-bottom: 8px; display: none; }
   .modal-btns { display: flex; gap: 8px; }
   .modal-btns button { flex: 1; padding: 8px; border-radius: 8px; cursor: pointer; font-size: 13px; border: 1px solid var(--border); }
-  .btn-cancel { background: transparent; color: var(--muted); }
-  .btn-confirm { background: rgba(240,74,74,.15); color: var(--danger); border-color: rgba(240,74,74,.4) !important; }
   .modal-obs { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem; width: 480px; max-width: 95vw; }
   .modal-obs h3 { font-size: 15px; font-weight: 600; margin-bottom: 4px; color: var(--accent); }
   .modal-obs p { font-size: 12px; color: var(--muted); margin-bottom: 10px; }
@@ -123,7 +85,11 @@
   .form-group label { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: .04em; display: block; margin-bottom: 4px; }
   .form-group input { width: 100%; background: var(--surface2); border: 1px solid var(--border); color: var(--text); padding: 7px 12px; border-radius: 8px; font-size: 13px; outline: none; }
   .form-group input:focus { border-color: var(--ok); }
-  @media (max-width: 600px) { .grid { grid-template-columns: 1fr; padding: .75rem; } }
+  .btn-cancel { background: transparent; color: var(--muted); }
+  .btn-confirm { background: rgba(240,74,74,.15); color: var(--danger); border-color: rgba(240,74,74,.4) !important; }
+  @media (max-width: 600px) {
+    .grid { grid-template-columns: 1fr; padding: .75rem; }
+      }
 </style>
 </head>
 <body>
@@ -131,7 +97,7 @@
 <div class="topbar">
   <div class="topbar-left">
     <span class="logo">🛠 <span>Herramientas</span></span>
-    <span class="ver-badge" id="header-ver"></span>
+    <span class="ver-badge">v16</span>
     <span class="badge-count" id="badge-count">— apps</span>
   </div>
   <div class="topbar-right">
@@ -143,8 +109,9 @@
 
 <div id="app-section">
   <div class="stats-bar" id="stats-bar"></div>
-  <div class="search-bar">
-    <input type="text" id="search-input" placeholder="🔍 Buscar herramienta..." oninput="renderCards()" />
+  <div style="padding:.6rem 1.5rem;border-bottom:1px solid var(--border);">
+    <input type="text" id="search-input" placeholder="🔍 Buscar herramienta..." oninput="renderCards()" style="width:100%;background:var(--surface);border:1px solid var(--border);color:var(--text);padding:7px 12px;border-radius:8px;font-size:13px;outline:none;" />
+  </div>
   </div>
   <div class="grid" id="cards-grid"></div>
 </div>
@@ -164,50 +131,14 @@
   </div>
 </div>
 
-<div class="modal-bg" id="modal-obs">
-  <div class="modal-obs">
-    <h3>✏ Editar observaciones</h3>
-    <p id="modal-obs-nombre"></p>
-    <textarea id="modal-obs-textarea" placeholder="Escribí las observaciones…"></textarea>
-    <div class="modal-btns" style="margin-top:10px;">
-      <button class="btn-cancel" onclick="cerrarModalObs()">Cancelar</button>
-      <button class="btn-confirm" style="background:rgba(79,142,247,.15);color:var(--accent);border-color:rgba(79,142,247,.4)!important;" onclick="guardarObsModal()">✓ Guardar</button>
-    </div>
-  </div>
-</div>
-
-<div class="modal-bg" id="modal-nueva">
-  <div class="modal-obs">
-    <h3 style="color:var(--ok);">+ Nueva herramienta</h3>
-    <p style="margin-bottom:14px;">Se agregará al final de la Sheet con estado CORRECTO.</p>
-    <div class="form-group"><label>Nombre *</label><input type="text" id="nueva-nombre" placeholder="Ej: Mi App v1" /></div>
-    <div class="form-group"><label>URL</label><input type="text" id="nueva-url" placeholder="https://..." /></div>
-    <div class="form-group"><label>Ícono</label><input type="text" id="nueva-icono" placeholder="Ej: APP" /></div>
-    <div class="form-group"><label>Descripción</label><input type="text" id="nueva-desc" placeholder="Para qué sirve..." /></div>
-    <div class="form-group"><label>Email / Cuenta</label><input type="text" id="nueva-email" placeholder="cuenta@gmail.com" /></div>
-    <div class="form-group"><label>Versión inicial</label><input type="number" id="nueva-ver" placeholder="Ej: 1" min="0" /></div>
-    <div class="form-group"><label>Observaciones</label><input type="text" id="nueva-obs" placeholder="Nota inicial..." /></div>
-    <p id="nueva-error" style="color:var(--danger);font-size:12px;display:none;margin-bottom:8px;">El nombre es obligatorio.</p>
-    <div class="modal-btns" style="margin-top:10px;">
-      <button class="btn-cancel" onclick="cerrarModalNueva()">Cancelar</button>
-      <button class="btn-confirm" style="background:rgba(61,214,140,.15);color:var(--ok);border-color:rgba(61,214,140,.4)!important;" onclick="guardarNueva()">✓ Agregar</button>
-    </div>
-  </div>
-</div>
-
 <script>
-const APP_VERSION = 18;
 const SHEET_ID   = '10irlDgBgsMVTTI4C1l-otFsNjhhWJr1otr4X3JXKT00';
 const SHEET_NAME = 'HERRAMIENTAS';
 const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxZ2ZVMOXAVVAxCPmtGE8q_yQT6mQpTWcf-X0IrpjI7Tcyq1ub3xZCoFO3gKcvebKR3/exec';
 
-document.title = `Herramientas v${APP_VERSION}`;
-document.getElementById('header-ver').textContent = `v${APP_VERSION}`;
-
 let tools = [];
 let filter = 'all';
 let pendingDeleteIdx = null;
-let pendingObsIdx = null;
 
 async function loadSheet() {
   document.getElementById('cards-grid').innerHTML = '<div class="empty-state">Cargando…</div>';
@@ -220,14 +151,15 @@ async function loadSheet() {
       .filter(r => r.c[0]?.v)
       .map(r => ({
         nombre:        String(r.c[0]?.v  || ''),
-        version:       r.c[1]?.v !== null && r.c[1]?.v !== undefined ? String(r.c[1].v) : '',
-        url:           String(r.c[2]?.v  || ''),
-        icono:         String(r.c[3]?.v  || ''),
-        descripcion:   String(r.c[4]?.v  || ''),
-        vuelve:        String(r.c[10]?.v || ''),
-        estado:        String(r.c[11]?.v || '').toLowerCase().trim(),
-        cuenta:        String(r.c[12]?.v || ''),
-        observaciones: String(r.c[13]?.v || ''),
+        url:           String(r.c[1]?.v  || ''),
+        icono:         String(r.c[2]?.v  || ''),
+        descripcion:   String(r.c[3]?.v  || ''),
+        cod:           String(r.c[6]?.v  || ''),
+        online:        String(r.c[7]?.v  || ''),
+        vuelve:        String(r.c[9]?.v  || ''),
+        estado:        String(r.c[10]?.v || '').toLowerCase().trim(),
+        cuenta:        String(r.c[11]?.v || ''),
+        observaciones: String(r.c[12]?.v || ''),
       }));
     document.getElementById('last-update').textContent = new Date().toLocaleTimeString('es-AR');
     document.getElementById('badge-count').textContent = tools.length + ' apps';
@@ -241,9 +173,9 @@ async function loadSheet() {
 function updateStats() {
   const c = {trabajando:0,correcto:0,esperar:0,pendiente:0,descartada:0};
   tools.forEach(t => { if(c[t.estado]!==undefined) c[t.estado]++; });
-  const btn = (f,color,count,label) => `<div class="stat" style="color:${color};border-bottom:2px solid ${filter===f?color:'transparent'};" onclick="setFilter('${f}')"><strong>${count}</strong> ${label}</div>`;
+  const btn = (f,color,count,label) => `<div class="stat" style="cursor:pointer;color:${color};border-bottom:2px solid ${filter===f?color:'transparent'};padding-bottom:2px;" onclick="setFilter('${f}')"><strong>${count}</strong> ${label}</div>`;
   document.getElementById('stats-bar').innerHTML =
-    `<div class="stat" style="border-bottom:2px solid ${filter==='all'?'var(--text)':'transparent'};" onclick="setFilter('all')"><strong>${tools.length}</strong> total</div>` +
+    `<div class="stat" style="cursor:pointer;border-bottom:2px solid ${filter==='all'?'var(--text)':'transparent'};padding-bottom:2px;" onclick="setFilter('all')"><strong>${tools.length}</strong> total</div>` +
     btn('trabajando','var(--accent)',c.trabajando,'trabajo') +
     btn('correcto','var(--ok)',c.correcto,'correctas') +
     btn('esperar','var(--warn)',c.esperar,'esperando') +
@@ -251,7 +183,12 @@ function updateStats() {
     btn('descartada','var(--danger)',c.descartada,'descartadas');
 }
 
-function setFilter(f) { filter = f; updateStats(); renderCards(); }
+function setFilter(f) {
+  filter = f;
+  updateStats();
+  renderCards();
+}
+
 const badgeClass = e => ({correcto:'b-correcto',trabajando:'b-trabajando',esperar:'b-esperar',pendiente:'b-pendiente',descartada:'b-descartada'}[e]||'b-esperar');
 const badgeLabel = e => ({correcto:'Correcto',trabajando:'Trabajando',esperar:'Esperar',pendiente:'Pendiente',descartada:'Descartada'}[e]||e||'—');
 
@@ -265,44 +202,24 @@ function renderCards() {
     const ec = 'estado-'+(t.estado||'esperar');
     const obs = t.observaciones ? `<div class="obs-text" id="obs-${idx}">${esc(t.observaciones)}</div>` : `<div class="obs-text obs-empty" id="obs-${idx}">Sin observaciones</div>`;
     const sel = ['trabajando','correcto','esperar','pendiente','descartada'].map(v=>`<option value="${v}"${t.estado===v?' selected':''}>${{trabajando:'🔵 Trabajando',correcto:'🟢 Correcto',esperar:'🟡 Esperar',pendiente:'🟣 Pendiente',descartada:'🔴 Descartada'}[v]}</option>`).join('');
-    const verNum = t.version !== '' ? parseInt(t.version)||0 : null;
-    const verLabel = verNum !== null ? `<span class="ver-num">v${verNum}</span>` : `<span class="ver-num sin-ver">sin ver</span>`;
-
-    // Botón abrir — solo si tiene URL
-    const urlValida = t.url && t.url !== 'null' && t.url.startsWith('http');
-    const urlCorta = urlValida ? t.url.replace(/^https?:\/\//, '').replace(/\/$/, '') : '';
-    const btnAbrir = urlValida ? `
-      <a class="btn-open" href="${esc(t.url)}" target="_blank" rel="noopener">
-        <span class="open-icon">🌐</span>
-        <span class="open-text">
-          <span class="open-label">Abrir aplicación</span>
-          <span class="open-url">${esc(urlCorta)}</span>
-        </span>
-        <span class="open-arrow">↗</span>
-      </a>` : '';
-
     return `<div class="card ${ec}" id="card-${idx}">
       <div class="card-top">
-        <div>
-          <div class="card-name">${esc(t.nombre)}</div>
-          <div class="card-desc">${esc(t.descripcion)}</div>
-        </div>
+        <div><div class="card-name">${esc(t.nombre)}</div><div class="card-desc">${esc(t.descripcion)}</div></div>
         <span class="badge-estado ${badgeClass(t.estado)}">${badgeLabel(t.estado)}</span>
       </div>
-      ${t.icono&&t.icono!=='null'?`<div><span class="tag tag-icono">${esc(t.icono)}</span></div>`:''}
-      ${btnAbrir}
-      <div class="ver-row">
-        ${verLabel}
-        <button class="btn-bump" onclick="bumpVersion(${idx})" title="Incrementar versión +1">+1 bump</button>
-        <span style="font-size:11px;color:var(--muted);margin-left:2px;">→ CORRECTO</span>
+      <div class="card-meta">
+        ${t.icono?`<span class="tag tag-icono">${esc(t.icono)}</span>`:''}
+        ${t.cod?`<span class="tag">COD: ${esc(t.cod)}</span>`:''}
+        ${t.online&&t.online!=='null'?`<span class="tag">online: ${esc(t.online)}</span>`:''}
+        ${t.url&&t.url!=='null'?`<a class="link-open" href="${esc(t.url)}" target="_blank">↗ Abrir</a>`:''}
       </div>
       ${t.cuenta&&t.cuenta!=='null'?`<div class="meta-email">✉ ${esc(t.cuenta)}</div>`:''}
       ${t.vuelve&&t.vuelve!=='null'?`<div class="card-deploy">⏰ Vuelve: ${esc(t.vuelve)}</div>`:''}
       <select class="estado-select" onchange="cambiarEstado(${idx},this.value)">${sel}</select>
       <div class="obs-section">
-        <div class="obs-label">
+        <div class="obs-label" style="display:flex;justify-content:space-between;align-items:center;">
           <span>Observaciones</span>
-          <button onclick="editarObs(${idx})">✏ editar</button>
+          <button onclick="editarObs(${idx})" style="background:transparent;border:none;color:var(--muted);cursor:pointer;font-size:11px;padding:0;">✏ editar</button>
         </div>
         ${obs}
         <div class="obs-add">
@@ -310,15 +227,15 @@ function renderCards() {
           <button onclick="addObs(${idx})">+ Guardar</button>
         </div>
       </div>
-      <div>
-        <div class="obs-label">
+      <div class="edit-email-row" id="email-row-${idx}">
+        <div class="obs-label" style="display:flex;justify-content:space-between;align-items:center;margin-top:6px;">
           <span>Email / Cuenta</span>
-          <button onclick="toggleEditEmail(${idx})">✏ editar</button>
+          <button onclick="toggleEditEmail(${idx})" style="background:transparent;border:none;color:var(--muted);cursor:pointer;font-size:11px;padding:0;">✏ editar</button>
         </div>
-        <div id="email-display-${idx}" style="font-size:12px;color:var(--muted);">${t.cuenta&&t.cuenta!=='null'?esc(t.cuenta):'<em style="color:var(--border)">Sin email</em>'}</div>
+        <div id="email-display-${idx}" style="font-size:12px;color:var(--muted);">${t.cuenta && t.cuenta!=='null' ? esc(t.cuenta) : '<em style=color:var(--border)>Sin email</em>'}</div>
         <div id="email-edit-${idx}" style="display:none;margin-top:4px;">
           <div class="obs-add">
-            <input type="text" id="email-inp-${idx}" value="${t.cuenta&&t.cuenta!=='null'?esc(t.cuenta):''}" placeholder="email@ejemplo.com" onkeydown="if(event.key==='Enter')guardarEmail(${idx})"/>
+            <input type="text" id="email-inp-${idx}" value="${t.cuenta && t.cuenta!=='null' ? esc(t.cuenta) : ''}" placeholder="email@ejemplo.com" onkeydown="if(event.key==='Enter')guardarEmail(${idx})"/>
             <button onclick="guardarEmail(${idx})">✓</button>
           </div>
         </div>
@@ -335,30 +252,6 @@ async function callScript(payload) {
   try { await fetch(url, { mode: 'no-cors' }); } catch(e) {}
 }
 
-async function bumpVersion(idx) {
-  const btn = document.querySelector(`#card-${idx} .btn-bump`);
-  if (btn) { btn.disabled = true; btn.textContent = '…'; }
-  const actual = tools[idx].version !== '' ? (parseInt(tools[idx].version)||0) : 0;
-  const nueva = actual + 1;
-  await callScript({ action: 'update', nombre: tools[idx].nombre, campo: 'ver', valor: nueva });
-  await callScript({ action: 'update', nombre: tools[idx].nombre, campo: 'estado', valor: 'CORRECTO' });
-  tools[idx].version = String(nueva);
-  tools[idx].estado = 'correcto';
-  if (btn) { btn.disabled = false; btn.textContent = '+1 bump'; }
-  const verEl = document.querySelector(`#card-${idx} .ver-num`);
-  if (verEl) { verEl.className = 'ver-num'; verEl.textContent = 'v' + nueva; }
-  const card = document.getElementById(`card-${idx}`);
-  if (card) {
-    card.className = 'card estado-correcto';
-    const badge = card.querySelector('.badge-estado');
-    if (badge) { badge.className = 'badge-estado b-correcto'; badge.textContent = 'Correcto'; }
-    const sel = card.querySelector('.estado-select');
-    if (sel) sel.value = 'correcto';
-  }
-  updateStats();
-  showToast(`v${nueva} → CORRECTO ✓`, 'ok');
-}
-
 async function addObs(idx) {
   const inp = document.getElementById(`obs-inp-${idx}`);
   const val = inp.value.trim();
@@ -367,7 +260,8 @@ async function addObs(idx) {
   btn.textContent = '…'; btn.disabled = true;
   await callScript({ action: 'addObs', nombre: tools[idx].nombre, obs: val });
   const ts = new Date().toLocaleString('es-AR',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});
-  tools[idx].observaciones = tools[idx].observaciones ? tools[idx].observaciones + ` · [${ts}] ${val}` : `[${ts}] ${val}`;
+  const nuevo = `[${ts}] ${val}`;
+  tools[idx].observaciones = tools[idx].observaciones ? tools[idx].observaciones + ' · ' + nuevo : nuevo;
   const el = document.getElementById(`obs-${idx}`);
   if (el) { el.classList.remove('obs-empty'); el.textContent = tools[idx].observaciones; }
   inp.value = ''; btn.textContent = '✓'; btn.disabled = false;
@@ -389,40 +283,6 @@ async function cambiarEstado(idx, nuevoEstado) {
   showToast(`Estado → ${badgeLabel(nuevoEstado)} ✓`, 'ok');
 }
 
-function editarObs(idx) {
-  pendingObsIdx = idx;
-  document.getElementById('modal-obs-nombre').textContent = tools[idx].nombre;
-  document.getElementById('modal-obs-textarea').value = tools[idx].observaciones || '';
-  document.getElementById('modal-obs').classList.add('show');
-  setTimeout(() => document.getElementById('modal-obs-textarea').focus(), 100);
-}
-function cerrarModalObs() { document.getElementById('modal-obs').classList.remove('show'); pendingObsIdx = null; }
-async function guardarObsModal() {
-  const idx = pendingObsIdx;
-  const val = document.getElementById('modal-obs-textarea').value.trim();
-  cerrarModalObs();
-  await callScript({ action: 'update', nombre: tools[idx].nombre, campo: 'observaciones', valor: val });
-  tools[idx].observaciones = val;
-  const el = document.getElementById(`obs-${idx}`);
-  if (el) { el.className = val ? 'obs-text' : 'obs-text obs-empty'; el.textContent = val || 'Sin observaciones'; }
-  showToast('Observaciones actualizadas ✓', 'ok');
-}
-
-function toggleEditEmail(idx) {
-  const d = document.getElementById(`email-edit-${idx}`);
-  d.style.display = d.style.display === 'none' ? 'block' : 'none';
-  if (d.style.display === 'block') document.getElementById(`email-inp-${idx}`).focus();
-}
-async function guardarEmail(idx) {
-  const val = document.getElementById(`email-inp-${idx}`).value.trim();
-  await callScript({ action: 'update', nombre: tools[idx].nombre, campo: 'email', valor: val });
-  tools[idx].cuenta = val;
-  const d = document.getElementById(`email-display-${idx}`);
-  if (d) d.innerHTML = val || '<em style="color:var(--border)">Sin email</em>';
-  document.getElementById(`email-edit-${idx}`).style.display = 'none';
-  showToast('Email actualizado ✓', 'ok');
-}
-
 function abrirModalEliminar(idx) {
   pendingDeleteIdx = idx;
   document.getElementById('modal-nombre-text').textContent = '¿Eliminar "' + tools[idx].nombre + '" de la Sheet?';
@@ -431,9 +291,15 @@ function abrirModalEliminar(idx) {
   document.getElementById('modal-eliminar').classList.add('show');
   setTimeout(() => document.getElementById('modal-pin').focus(), 100);
 }
-function cerrarModal() { document.getElementById('modal-eliminar').classList.remove('show'); pendingDeleteIdx = null; }
+
+function cerrarModal() {
+  document.getElementById('modal-eliminar').classList.remove('show');
+  pendingDeleteIdx = null;
+}
+
 function confirmarPin() {
-  if (document.getElementById('modal-pin').value !== '7749') {
+  const pin = document.getElementById('modal-pin').value;
+  if (pin !== '7749') {
     document.getElementById('modal-error').style.display = 'block';
     document.getElementById('modal-pin').value = '';
     return;
@@ -441,38 +307,98 @@ function confirmarPin() {
   const idx = pendingDeleteIdx;
   const nombre = tools[idx].nombre;
   cerrarModal();
-  const url = SCRIPT_URL + '?data=' + encodeURIComponent(JSON.stringify({ action: 'eliminar', nombre }));
+  // Abrir pestaña nueva para el DELETE — más confiable que fetch no-cors
+  const url = SCRIPT_URL + '?data=' + encodeURIComponent(JSON.stringify({ action: 'eliminar', nombre: nombre }));
   window.open(url, '_blank');
+  // Actualizar panel local
   tools.splice(idx, 1);
   document.getElementById('badge-count').textContent = tools.length + ' apps';
-  updateStats(); renderCards();
+  updateStats();
+  renderCards();
   showToast('Eliminada ✓ — cerrá la pestaña', 'ok');
 }
 
+let pendingObsIdx = null;
+
+function editarObs(idx) {
+  pendingObsIdx = idx;
+  document.getElementById('modal-obs-nombre').textContent = tools[idx].nombre;
+  document.getElementById('modal-obs-textarea').value = tools[idx].observaciones || '';
+  document.getElementById('modal-obs').classList.add('show');
+  setTimeout(() => document.getElementById('modal-obs-textarea').focus(), 100);
+}
+
+function cerrarModalObs() {
+  document.getElementById('modal-obs').classList.remove('show');
+  pendingObsIdx = null;
+}
+
+async function guardarObsModal() {
+  const idx = pendingObsIdx;
+  const val = document.getElementById('modal-obs-textarea').value.trim();
+  cerrarModalObs();
+  await callScript({ action: 'update', nombre: tools[idx].nombre, campo: 'observaciones', valor: val });
+  tools[idx].observaciones = val;
+  const el = document.getElementById('obs-' + idx);
+  if (el) {
+    if (val) { el.classList.remove('obs-empty'); el.textContent = val; }
+    else { el.classList.add('obs-empty'); el.textContent = 'Sin observaciones'; }
+  }
+  showToast('Observaciones actualizadas ✓', 'ok');
+}
+
+function toggleEditEmail(idx) {
+  const editDiv = document.getElementById('email-edit-' + idx);
+  const isVisible = editDiv.style.display !== 'none';
+  editDiv.style.display = isVisible ? 'none' : 'block';
+  if (!isVisible) document.getElementById('email-inp-' + idx).focus();
+}
+
+async function guardarEmail(idx) {
+  const inp = document.getElementById('email-inp-' + idx);
+  const val = inp.value.trim();
+  await callScript({ action: 'update', nombre: tools[idx].nombre, campo: 'email', valor: val });
+  tools[idx].cuenta = val;
+  const display = document.getElementById('email-display-' + idx);
+  if (display) display.innerHTML = val || '<em style="color:var(--border)">Sin email</em>';
+  document.getElementById('email-edit-' + idx).style.display = 'none';
+  showToast('Email actualizado ✓', 'ok');
+}
+
 function abrirModalNueva() {
-  ['nueva-nombre','nueva-url','nueva-icono','nueva-desc','nueva-email','nueva-ver','nueva-obs'].forEach(id => document.getElementById(id).value = '');
+  ['nueva-nombre','nueva-url','nueva-icono','nueva-desc','nueva-email','nueva-obs'].forEach(id => document.getElementById(id).value = '');
   document.getElementById('nueva-error').style.display = 'none';
   document.getElementById('modal-nueva').classList.add('show');
   setTimeout(() => document.getElementById('nueva-nombre').focus(), 100);
 }
-function cerrarModalNueva() { document.getElementById('modal-nueva').classList.remove('show'); }
+
+function cerrarModalNueva() {
+  document.getElementById('modal-nueva').classList.remove('show');
+}
+
 async function guardarNueva() {
   const nombre = document.getElementById('nueva-nombre').value.trim();
   if (!nombre) { document.getElementById('nueva-error').style.display = 'block'; return; }
   const nueva = {
-    nombre, url: document.getElementById('nueva-url').value.trim(),
-    icono: document.getElementById('nueva-icono').value.trim(),
-    descripcion: document.getElementById('nueva-desc').value.trim(),
-    cuenta: document.getElementById('nueva-email').value.trim(),
-    version: document.getElementById('nueva-ver').value.trim() || '1',
-    observaciones: document.getElementById('nueva-obs').value.trim(),
-    estado: 'correcto', vuelve: ''
+    nombre,
+    url:          document.getElementById('nueva-url').value.trim(),
+    icono:        document.getElementById('nueva-icono').value.trim(),
+    descripcion:  document.getElementById('nueva-desc').value.trim(),
+    cuenta:       document.getElementById('nueva-email').value.trim(),
+    observaciones:document.getElementById('nueva-obs').value.trim(),
+    estado:       'correcto',
+    cod: '', online: '', vuelve: ''
   };
   cerrarModalNueva();
   await callScript({ action: 'agregar', tool: nueva });
+  // Agregar al final del array y renderizar
   tools.push(nueva);
   document.getElementById('badge-count').textContent = tools.length + ' apps';
-  updateStats(); renderCards();
+  updateStats();
+  // Si el filtro actual no muestra correctas, cambiar a all
+  if (filter !== 'all' && filter !== 'correcto') setFilter('all');
+  else renderCards();
+  // Scroll al final
   setTimeout(() => window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' }), 100);
   showToast('"' + nombre + '" agregada ✓', 'ok');
 }
@@ -485,5 +411,33 @@ function showToast(msg, type) {
 
 loadSheet();
 </script>
+<div class="modal-bg" id="modal-nueva">
+  <div class="modal-obs">
+    <h3 style="color:var(--ok);">+ Nueva herramienta</h3>
+    <p style="margin-bottom:14px;">Se agregará al final de la Sheet con estado CORRECTO.</p>
+    <div class="form-group"><label>Nombre *</label><input type="text" id="nueva-nombre" placeholder="Ej: Mi App v1" /></div>
+    <div class="form-group"><label>URL</label><input type="text" id="nueva-url" placeholder="https://..." /></div>
+    <div class="form-group"><label>Ícono</label><input type="text" id="nueva-icono" placeholder="Ej: APP" /></div>
+    <div class="form-group"><label>Descripción</label><input type="text" id="nueva-desc" placeholder="Para qué sirve..." /></div>
+    <div class="form-group"><label>Email / Cuenta</label><input type="text" id="nueva-email" placeholder="cuenta@gmail.com" /></div>
+    <div class="form-group"><label>Observaciones</label><input type="text" id="nueva-obs" placeholder="Nota inicial..." /></div>
+    <p id="nueva-error" style="color:var(--danger);font-size:12px;display:none;margin-bottom:8px;">El nombre es obligatorio.</p>
+    <div class="modal-btns" style="margin-top:10px;">
+      <button class="btn-cancel" onclick="cerrarModalNueva()">Cancelar</button>
+      <button class="btn-confirm" style="background:rgba(61,214,140,.15);color:var(--ok);border-color:rgba(61,214,140,.4)!important;" onclick="guardarNueva()">✓ Agregar</button>
+    </div>
+  </div>
+</div>
+<div class="modal-bg" id="modal-obs">
+  <div class="modal-obs">
+    <h3>✏ Editar observaciones</h3>
+    <p id="modal-obs-nombre"></p>
+    <textarea id="modal-obs-textarea" placeholder="Escribí las observaciones…"></textarea>
+    <div class="modal-btns" style="margin-top:10px;">
+      <button class="btn-cancel" onclick="cerrarModalObs()">Cancelar</button>
+      <button class="btn-confirm" style="background:rgba(79,142,247,.15);color:var(--accent);border-color:rgba(79,142,247,.4)!important;" onclick="guardarObsModal()">✓ Guardar</button>
+    </div>
+  </div>
+</div>
 </body>
 </html>
